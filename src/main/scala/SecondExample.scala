@@ -60,21 +60,21 @@ object SecondExample extends App {
     println(q2.selectStatement)
     //println(q2.countDistinct.value)
 
-    val q3 = for (
-      p <- ACPolicies;
-      rel <- ACResourceGroupsRel if rel.resourceGroupId === p.resourseGroupId;
-      a <- ACResourceCategories if a.id === rel.resourceCategoryId;
+    val q3 = for {
+      p <- ACPolicies
+      rel <- ACResourceGroupsRel if rel.resourceGroupId === p.resourseGroupId
+      a <- ACResourceCategories if a.id === rel.resourceCategoryId
       c <- CommandRegistry if (c.className.like("%.sysiq.%") || c.className.like("%.hm.%")) && a.resourceClassName === c.interfaceName
-    ) yield (p.policyName, c.interfaceName, c.className)
+    } yield (p.policyName, c.interfaceName, c.className)
 
     println(q3.selectStatement)
     q3 foreach println
 
-    val q4 = for (
-      p <- ACPolicies;
-      rel <- ACActionGroupsRel if rel.actionGroupId === p.actionGroupId;      
+    val q4 = for {
+      p <- ACPolicies
+      rel <- ACActionGroupsRel if rel.actionGroupId === p.actionGroupId      
       a <- ACActions if a.action.like("SI%") && a.id === rel.actionId
-    ) yield (p.policyName, a.action)
+    } yield (p.policyName, a.action)
 
     println(q4.selectStatement)
     q4 foreach println
