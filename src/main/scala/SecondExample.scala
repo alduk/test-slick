@@ -80,15 +80,20 @@ object SecondExample extends App {
     println(q4.selectStatement)
     q4 foreach println
 
-    CatalogEntries foreach println
-
     val q5 = for {
-      e <- CatalogEntries
-      b <- e.baseItem
+      (e, b) <- CatalogEntries innerJoin BaseItems on (_.baseItemId === _.id)
     } yield (e, b)
     println(q5.selectStatement)
     q5 foreach println
-    
-    
+
+    val q6 = for {
+      e <- CatalogEntries
+      b<- e.baseItem2
+    } yield (e, b)
+    println(q6.selectStatement)
+    println(q6.list.length)
+
+    val v = CatalogEntries.list
+    println(v.length)
   }
 }

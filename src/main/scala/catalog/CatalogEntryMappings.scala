@@ -25,6 +25,7 @@ object CatalogEntryMappings {
     def manufacturerName = column[Option[String]]("MFNAME")
     def baseItemId = column[Option[Int]]("BASEITEM_ID")
     def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)
+    def baseItem2 = BaseItems.filter(_.id === baseItemId)
     def * = (id, catentryType, partNumber, manufacturerPartNumber, manufacturerName, baseItemId) <> (CatalogEntry.tupled, CatalogEntry.unapply)
   }
 
