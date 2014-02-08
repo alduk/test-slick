@@ -3,6 +3,7 @@
 import com.typesafe.slick.driver.db2.DB2Driver.simple._
 import config.DB._
 import accesscontrol.ACPoliciyMappings._
+import catalog.CatalogEntryMappings._
 
 // Use the implicit threadLocalSession
 //import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
@@ -79,5 +80,6 @@ object SecondExample extends App {
     println(q4.selectStatement)
     q4 foreach println
 
+    CatalogEntries foreach println
   }
 }
