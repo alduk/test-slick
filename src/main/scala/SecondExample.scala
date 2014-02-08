@@ -73,7 +73,7 @@ object SecondExample extends App {
 
     val q4 = for {
       p <- ACPolicies
-      rel <- ACActionGroupsRel if rel.actionGroupId === p.actionGroupId      
+      rel <- ACActionGroupsRel if rel.actionGroupId === p.actionGroupId
       a <- ACActions if a.action.like("SI%") && a.id === rel.actionId
     } yield (p.policyName, a.action)
 
@@ -81,5 +81,14 @@ object SecondExample extends App {
     q4 foreach println
 
     CatalogEntries foreach println
+
+    val q5 = for {
+      e <- CatalogEntries
+      b <- e.baseItem
+    } yield (e, b)
+    println(q5.selectStatement)
+    q5 foreach println
+    
+    
   }
 }
