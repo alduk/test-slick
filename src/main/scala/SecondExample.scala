@@ -88,12 +88,16 @@ object SecondExample extends App {
 
     val q6 = for {
       e <- CatalogEntries
-      b<- e.baseItem2
-    } yield (e, b)
+      b <- e.baseItem2
+      p <- e.listPrice
+    } yield (e, b, p.currency, p.price)
     println(q6.selectStatement)
     println(q6.list.length)
+    q6 foreach println
 
     val v = CatalogEntries.list
     println(v.length)
+
+    //CatalogEntries map { x => x.listPrice }
   }
 }

@@ -24,10 +24,22 @@ object CatalogEntryMappings {
     def manufacturerPartNumber = column[Option[String]]("MFPARTNUMBER")
     def manufacturerName = column[Option[String]]("MFNAME")
     def baseItemId = column[Option[Int]]("BASEITEM_ID")
-    def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)
+    def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)    
     def baseItem2 = BaseItems.filter(_.id === baseItemId)
+    def listPrice = foreignKey("F_419", id, ListPrices)(_.catentryId)
     def * = (id, catentryType, partNumber, manufacturerPartNumber, manufacturerName, baseItemId) <> (CatalogEntry.tupled, CatalogEntry.unapply)
   }
-
+  
   val CatalogEntries = TableQuery[CatalogEntries]
+  
+  case class ListPrice(catentryId:Int,currency:String,price:Double)
+  class ListPrices(tag:Tag)extends Table[ListPrice](tag,"LISTPRICE"){
+    def catentryId = column[Int]("CATENTRY_ID")
+    def currency = column[String]("CURRENCY")
+    def price = column[Double]("LISTPRICE")
+    def * = (catentryId,currency,price) <>(ListPrice.tupled, ListPrice.unapply)
+    def pk = primaryKey("<SYSTEM-GENERATED>", (catentryId, currency))
+  }
+  
+  val ListPrices = TableQuery[ListPrices]
 }
