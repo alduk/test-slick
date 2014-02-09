@@ -1,6 +1,7 @@
 package catalog
 
 import com.typesafe.slick.driver.db2.DB2Driver.simple._
+import java.sql.Date
 
 object CatalogEntryMappings {
 
@@ -36,6 +37,10 @@ object CatalogEntryMappings {
       r <- CatentryRelations.filter(_.parentId === id)
       c <- CatalogEntries.filter(_.id === r.childId)
     } yield (c)
+    def offerPrices = for {
+      o <- Offers if o.catentryId === id
+      p <- OfferPrices if p.offerId === o.offerId
+    } yield (o, p)
     def * = (id, catentryType, partNumber, manufacturerPartNumber, manufacturerName, baseItemId) <> (CatalogEntry.tupled, CatalogEntry.unapply)
   }
 
@@ -62,4 +67,30 @@ object CatalogEntryMappings {
   }
 
   val ListPrices = TableQuery[ListPrices]
+
+  case class Offer(offerId: Int, catentryId: Int, published:Int, identifier:Long, minQty: Option[Double], maxQty: Option[Double], startDate: Option[Date], endDate: Option[Date])
+  class Offers(tag: Tag) extends Table[Offer](tag, "OFFER") {
+    def offerId = column[Int]("OFFER_ID", O.PrimaryKey)
+    def catentryId = column[Int]("CATENTRY_ID")
+    def published = column[Int]("PUBLISHED")
+    def identifier = column[Long]("IDENTIFIER")
+    def startDate = column[Date]("STARTDATE")
+    def endDate = column[Date]("ENDDATE")
+    def minQty = column[Double]("MINIMUMQUANTITY")
+    def maxQty = column[Double]("MAXIMUMQUANTITY")
+    def * = (offerId, catentryId, published, identifier, minQty.?, maxQty.?, startDate.?, endDate.?) <> (Offer.tupled, Offer.unapply)
+  }
+
+  val Offers = TableQuery[Offers]
+
+  case class OfferPrice(offerId: Int, currency: String, price: Double)
+  class OfferPrices(tag: Tag) extends Table[OfferPrice](tag, "OFFERPRICE") {
+    def offerId = column[Int]("OFFER_ID")
+    def currency = column[String]("CURRENCY")
+    def price = column[Double]("PRICE")
+    def * = (offerId, currency, price) <> (OfferPrice.tupled, OfferPrice.unapply)
+    def pk = primaryKey("<SYSTEM-GENERATED>", (offerId, currency))
+  }
+
+  val OfferPrices = TableQuery[OfferPrices]
 }
