@@ -27,6 +27,7 @@ object CatalogEntryMappings {
     def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)    
     def baseItem2 = BaseItems.filter(_.id === baseItemId)
     def listPrice = foreignKey("F_419", id, ListPrices)(_.catentryId)
+    def listPrice2 = ListPrices.filter(_.catentryId === id)
     def * = (id, catentryType, partNumber, manufacturerPartNumber, manufacturerName, baseItemId) <> (CatalogEntry.tupled, CatalogEntry.unapply)
   }
   
