@@ -24,23 +24,42 @@ object CatalogEntryMappings {
     def manufacturerPartNumber = column[Option[String]]("MFPARTNUMBER")
     def manufacturerName = column[Option[String]]("MFNAME")
     def baseItemId = column[Option[Int]]("BASEITEM_ID")
-    def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)    
+    def baseItem = foreignKey("F_202", baseItemId, BaseItems)(_.id)
     def baseItem2 = BaseItems.filter(_.id === baseItemId)
     def listPrice = foreignKey("F_419", id, ListPrices)(_.catentryId)
     def listPrice2 = ListPrices.filter(_.catentryId === id)
+    def parent = for {
+      r <- CatentryRelations.filter(_.childId === id)
+      c <- CatalogEntries.filter(_.id === r.parentId)
+    } yield (c)
+    def children = for {
+      r <- CatentryRelations.filter(_.parentId === id)
+      c <- CatalogEntries.filter(_.id === r.childId)
+    } yield (c)
     def * = (id, catentryType, partNumber, manufacturerPartNumber, manufacturerName, baseItemId) <> (CatalogEntry.tupled, CatalogEntry.unapply)
   }
-  
+
   val CatalogEntries = TableQuery[CatalogEntries]
-  
-  case class ListPrice(catentryId:Int,currency:String,price:Double)
-  class ListPrices(tag:Tag)extends Table[ListPrice](tag,"LISTPRICE"){
+
+  case class CatentryRelation(parentId: Int, childId: Int, relationType: String)
+  class CatentryRelations(tag: Tag) extends Table[CatentryRelation](tag, "CATENTREL") {
+    def parentId = column[Int]("CATENTRY_ID_PARENT")
+    def childId = column[Int]("CATENTRY_ID_CHILD")
+    def relationType = column[String]("CATRELTYPE_ID")
+    def * = (parentId, childId, relationType) <> (CatentryRelation.tupled, CatentryRelation.unapply)
+    def pk = primaryKey("<SYSTEM-GENERATED>", (relationType, parentId, childId))
+  }
+
+  val CatentryRelations = TableQuery[CatentryRelations]
+
+  case class ListPrice(catentryId: Int, currency: String, price: Double)
+  class ListPrices(tag: Tag) extends Table[ListPrice](tag, "LISTPRICE") {
     def catentryId = column[Int]("CATENTRY_ID")
     def currency = column[String]("CURRENCY")
     def price = column[Double]("LISTPRICE")
-    def * = (catentryId,currency,price) <>(ListPrice.tupled, ListPrice.unapply)
+    def * = (catentryId, currency, price) <> (ListPrice.tupled, ListPrice.unapply)
     def pk = primaryKey("<SYSTEM-GENERATED>", (catentryId, currency))
   }
-  
+
   val ListPrices = TableQuery[ListPrices]
 }
