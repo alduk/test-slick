@@ -2,6 +2,7 @@ import config.Config._
 import config.Config.driver._
 import accesscontrol.ACPoliciyMappings._
 import catalog.CatalogEntryMappings._
+import commands.CommandMapings._
 
 // Use the implicit threadLocalSession
 //import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
@@ -19,16 +20,6 @@ object SecondExample extends App {
   }
   val Stores = TableQuery[Stores]
 
-  // Definition of the SUPPLIERS table
-  class CommandRegistry(tag: Tag) extends Table[(Int, String, String)](tag, "CMDREG") {
-    def storeEntId = column[Int]("STOREENT_ID")
-    def interfaceName = column[String]("INTERFACENAME")
-    def className = column[String]("CLASSNAME")
-    def pk = primaryKey("SQL140117144819710", (storeEntId, interfaceName))
-    // Every table needs a * projection with the same type as the table's type parameter
-    def * = (storeEntId, interfaceName, className)
-  }
-  val CommandRegistry = TableQuery[CommandRegistry]
 
   // Connect to the database and execute the following block within a session
   db withSession { implicit session =>

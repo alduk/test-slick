@@ -8,20 +8,22 @@ import config.Config.driver._
  */
 object ACPoliciyMappings {
 
-  class ACPolicies(tag: Tag) extends Table[(Int, String, Int,Int)](tag, "ACPOLICY") {
+  case class ACPolicy(id: Int, policyName: String, resourseGroupId: Int, actionGroupId: Int)
+  class ACPolicies(tag: Tag) extends Table[ACPolicy](tag, "ACPOLICY") {
     def id = column[Int]("ACPOLICY_ID", O.PrimaryKey)
     def policyName = column[String]("POLICYNAME")
     def resourseGroupId = column[Int]("ACRESGRP_ID")
     def actionGroupId = column[Int]("ACACTGRP_ID")
-    def * = (id, policyName, resourseGroupId,actionGroupId)
+    def * = (id, policyName, resourseGroupId, actionGroupId) <> (ACPolicy.tupled, ACPolicy.unapply)
   }
 
   val ACPolicies = TableQuery[ACPolicies]
 
-  class ACActions(tag: Tag) extends Table[(Int, String)](tag, "ACACTION") {
+  case class ACAction(id: Int, action: String)
+  class ACActions(tag: Tag) extends Table[ACAction](tag, "ACACTION") {
     def id = column[Int]("ACACTION_ID", O.PrimaryKey)
     def action = column[String]("ACTION")
-    def * = (id, action)
+    def * = (id, action) <> (ACAction.tupled, ACAction.unapply)
   }
 
   val ACActions = TableQuery[ACActions]
@@ -43,10 +45,11 @@ object ACPoliciyMappings {
 
   val ACActionGroupsRel = TableQuery[ACActionGroupsRel]
 
-  class ACResourceCategories(tag: Tag) extends Table[(Int, String)](tag, "ACRESCGRY") {
+  case class ACResourceCategory(id: Int, resourceClassName: String)
+  class ACResourceCategories(tag: Tag) extends Table[ACResourceCategory](tag, "ACRESCGRY") {
     def id = column[Int]("ACRESCGRY_ID", O.PrimaryKey)
     def resourceClassName = column[String]("RESCLASSNAME")
-    def * = (id, resourceClassName)
+    def * = (id, resourceClassName) <> (ACResourceCategory.tupled, ACResourceCategory.unapply)
   }
   val ACResourceCategories = TableQuery[ACResourceCategories]
 
