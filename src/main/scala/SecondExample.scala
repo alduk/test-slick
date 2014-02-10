@@ -1,5 +1,5 @@
-import config.DB._
-import config.DB.driver._
+import config.Config._
+import config.Config.driver._
 import accesscontrol.ACPoliciyMappings._
 import catalog.CatalogEntryMappings._
 

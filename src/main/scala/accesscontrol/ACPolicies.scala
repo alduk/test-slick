@@ -1,6 +1,6 @@
 package accesscontrol
 
-import config.DB.driver._
+import config.Config.driver._
 
 /*
  * Mappings for access policies

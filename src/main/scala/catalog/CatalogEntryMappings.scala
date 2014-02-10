@@ -1,6 +1,6 @@
 package catalog
 
-import config.DB.driver._
+import config.Config.driver._
 import java.sql.Date
 
 object CatalogEntryMappings{
