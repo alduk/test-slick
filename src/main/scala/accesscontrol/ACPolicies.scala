@@ -1,6 +1,6 @@
 package accesscontrol
 
-import com.typesafe.slick.driver.db2.DB2Driver.simple._
+import config.DB.driver._
 
 /*
  * Mappings for access policies

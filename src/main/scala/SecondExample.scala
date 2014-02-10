@@ -1,7 +1,5 @@
-
-// Use H2Driver to connect to an H2 database
-import com.typesafe.slick.driver.db2.DB2Driver.simple._
 import config.DB._
+import config.DB.driver._
 import accesscontrol.ACPoliciyMappings._
 import catalog.CatalogEntryMappings._
 

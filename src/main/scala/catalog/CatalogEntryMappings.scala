@@ -1,10 +1,10 @@
 package catalog
 
-import com.typesafe.slick.driver.db2.DB2Driver.simple._
+import config.DB.driver._
 import java.sql.Date
 
-object CatalogEntryMappings {
-
+object CatalogEntryMappings{
+  
   case class BaseItem(id: Int, itemType: String, quantityMeasure: String, partNumber: String, quantityMultiple: Double)
   class BaseItems(tag: Tag) extends Table[BaseItem](tag, "BASEITEM") {
     def id = column[Int]("BASEITEM_ID", O.PrimaryKey)
