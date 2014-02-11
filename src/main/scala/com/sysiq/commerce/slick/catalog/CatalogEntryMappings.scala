@@ -17,9 +17,9 @@ object CatalogEntryMappings{
 
   val BaseItems = TableQuery[BaseItems]
 
-  case class CatalogEntry(id: Int, catentryType: String, partNumber: String, manufacturerPartNumber: Option[String], manufacturerName: Option[String], baseItemId: Option[Int])
+  case class CatalogEntry(id: Long, catentryType: String, partNumber: String, manufacturerPartNumber: Option[String], manufacturerName: Option[String], baseItemId: Option[Int])
   class CatalogEntries(tag: Tag) extends Table[CatalogEntry](tag, "CATENTRY") {
-    def id = column[Int]("CATENTRY_ID", O.PrimaryKey)
+    def id = column[Long]("CATENTRY_ID", O.PrimaryKey)
     def catentryType = column[String]("CATENTTYPE_ID")
     def partNumber = column[String]("PARTNUMBER")
     def manufacturerPartNumber = column[Option[String]]("MFPARTNUMBER")
@@ -46,10 +46,10 @@ object CatalogEntryMappings{
 
   val CatalogEntries = TableQuery[CatalogEntries]
 
-  case class CatentryRelation(parentId: Int, childId: Int, relationType: String)
+  case class CatentryRelation(parentId: Long, childId: Long, relationType: String)
   class CatentryRelations(tag: Tag) extends Table[CatentryRelation](tag, "CATENTREL") {
-    def parentId = column[Int]("CATENTRY_ID_PARENT")
-    def childId = column[Int]("CATENTRY_ID_CHILD")
+    def parentId = column[Long]("CATENTRY_ID_PARENT")
+    def childId = column[Long]("CATENTRY_ID_CHILD")
     def relationType = column[String]("CATRELTYPE_ID")
     def * = (parentId, childId, relationType) <> (CatentryRelation.tupled, CatentryRelation.unapply)
     def pk = primaryKey("<SYSTEM-GENERATED>", (relationType, parentId, childId))
@@ -57,9 +57,9 @@ object CatalogEntryMappings{
 
   val CatentryRelations = TableQuery[CatentryRelations]
 
-  case class ListPrice(catentryId: Int, currency: String, price: Double)
+  case class ListPrice(catentryId: Long, currency: String, price: Double)
   class ListPrices(tag: Tag) extends Table[ListPrice](tag, "LISTPRICE") {
-    def catentryId = column[Int]("CATENTRY_ID")
+    def catentryId = column[Long]("CATENTRY_ID")
     def currency = column[String]("CURRENCY")
     def price = column[Double]("LISTPRICE")
     def * = (catentryId, currency, price) <> (ListPrice.tupled, ListPrice.unapply)
@@ -68,10 +68,10 @@ object CatalogEntryMappings{
 
   val ListPrices = TableQuery[ListPrices]
 
-  case class Offer(offerId: Int, catentryId: Int, published:Int, identifier:Long, minQty: Option[Double], maxQty: Option[Double], startDate: Option[Date], endDate: Option[Date])
+  case class Offer(offerId: Int, catentryId: Long, published:Int, identifier:Long, minQty: Option[Double], maxQty: Option[Double], startDate: Option[Date], endDate: Option[Date])
   class Offers(tag: Tag) extends Table[Offer](tag, "OFFER") {
     def offerId = column[Int]("OFFER_ID", O.PrimaryKey)
-    def catentryId = column[Int]("CATENTRY_ID")
+    def catentryId = column[Long]("CATENTRY_ID")
     def published = column[Int]("PUBLISHED")
     def identifier = column[Long]("IDENTIFIER")
     def startDate = column[Date]("STARTDATE")
