@@ -1,6 +1,6 @@
-package catalog
+package com.sysiq.commerce.slick.catalog
 
-import config.Config.driver._
+import com.sysiq.commerce.slick.config.Config.driver._
 import java.sql.Date
 
 object CatalogEntryMappings{

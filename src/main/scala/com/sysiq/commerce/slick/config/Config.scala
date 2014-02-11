@@ -1,4 +1,4 @@
-package config
+package com.sysiq.commerce.slick.config
 
 import com.typesafe.slick.driver.db2.DB2Driver.simple._
 

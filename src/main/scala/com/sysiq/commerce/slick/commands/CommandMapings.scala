@@ -1,6 +1,6 @@
-package commands
+package com.sysiq.commerce.slick.commands
 
-import config.Config.driver._
+import com.sysiq.commerce.slick.config.Config.driver._
 
 object CommandMapings {
   // Definition of the CmdReg table

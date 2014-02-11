@@ -1,6 +1,6 @@
-package accesscontrol
+package com.sysiq.commerce.slick.accesscontrol
 
-import config.Config.driver._
+import com.sysiq.commerce.slick.config.Config.driver._
 
 /*
  * Mappings for access policies

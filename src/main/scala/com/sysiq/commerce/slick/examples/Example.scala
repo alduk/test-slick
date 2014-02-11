@@ -1,13 +1,15 @@
-import config.Config._
-import config.Config.driver._
-import accesscontrol.ACPoliciyMappings._
-import catalog.CatalogEntryMappings._
-import commands.CommandMapings._
+package com.sysiq.commerce.slick.examples
+
+import com.sysiq.commerce.slick.config.Config._
+import com.sysiq.commerce.slick.config.Config.driver._
+import com.sysiq.commerce.slick.accesscontrol.ACPoliciyMappings._
+import com.sysiq.commerce.slick.catalog.CatalogEntryMappings._
+import com.sysiq.commerce.slick.commands.CommandMapings._
 
 // Use the implicit threadLocalSession
 //import scala.slick.jdbc.JdbcBackend.Database.dynamicSession
 
-object SecondExample extends App {
+object Example extends App {
 
   case class Store(id: Int, directory: Option[String])
 
