@@ -10,8 +10,8 @@ object CatalogMappings {
     def id = column[Long]("CATALOG_ID", O.PrimaryKey)
     def memberId = column[Long]("MEMBER_ID")
     def identifier = column[String]("IDENTIFIER")
-    def description = column[String]("DESCRIPTION")
-    def * = (id, memberId, identifier, description.?) <> (Catalog.tupled, Catalog.unapply)
+    def description = column[Option[String]]("DESCRIPTION")
+    def * = (id, memberId, identifier, description) <> (Catalog.tupled, Catalog.unapply)
   }
 
   val Catalogs = TableQuery[Catalogs]
