@@ -68,9 +68,9 @@ object CatalogEntryMappings{
 
   val ListPrices = TableQuery[ListPrices]
 
-  case class Offer(offerId: Int, catentryId: Long, published:Int, identifier:Long, minQty: Option[Double], maxQty: Option[Double], startDate: Option[Date], endDate: Option[Date])
+  case class Offer(offerId: Long, catentryId: Long, published:Int, identifier:Long, minQty: Option[Double], maxQty: Option[Double], startDate: Option[Date], endDate: Option[Date])
   class Offers(tag: Tag) extends Table[Offer](tag, "OFFER") {
-    def offerId = column[Int]("OFFER_ID", O.PrimaryKey)
+    def offerId = column[Long]("OFFER_ID", O.PrimaryKey)
     def catentryId = column[Long]("CATENTRY_ID")
     def published = column[Int]("PUBLISHED")
     def identifier = column[Long]("IDENTIFIER")
@@ -83,9 +83,9 @@ object CatalogEntryMappings{
 
   val Offers = TableQuery[Offers]
 
-  case class OfferPrice(offerId: Int, currency: String, price: Double)
+  case class OfferPrice(offerId: Long, currency: String, price: Double)
   class OfferPrices(tag: Tag) extends Table[OfferPrice](tag, "OFFERPRICE") {
-    def offerId = column[Int]("OFFER_ID")
+    def offerId = column[Long]("OFFER_ID")
     def currency = column[String]("CURRENCY")
     def price = column[Double]("PRICE")
     def * = (offerId, currency, price) <> (OfferPrice.tupled, OfferPrice.unapply)
